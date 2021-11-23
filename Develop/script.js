@@ -1,10 +1,66 @@
 // Assignment Code
-const NUMBERS = [];
-const SYMBOLS = [];
-const LETTERS = [];
-let PASSWORD = [];
-let MIN_LENGTH_PASSWORD = 0;
-let MAX_LENGTH_PASSWORD = 0;
+const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const SYMBOLS = [
+  "!",
+  "#",
+  "$",
+  "%",
+  "&",
+  "'",
+  "(",
+  ")",
+  ",",
+  "*",
+  "+",
+  "-",
+  ".",
+  "/",
+  ":",
+  ";",
+  "<",
+  "=",
+  ">",
+  "?",
+  "@",
+  "[",
+  "]",
+  "^",
+  "_",
+  "{",
+  "|",
+  "}",
+  "~",
+];
+const LETTERS = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+let MIN_LENGTH_PASSWORD = 8;
+let MAX_LENGTH_PASSWORD = 128;
 let UPPERCASE_FLAG = false;
 let NUMBER_FLAG = false;
 let SYMBOL_FLAG = false;
@@ -38,83 +94,21 @@ function passwordConfiguration() {
 }
 
 /**
- * This function wil return a random charachter in the Array given.
+ * This function will return a random character in the Array given.
  */
 function randomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 /**
  * Declaration of the characters that will contain the password like: numbers, special characters and letters.
- * Also I will add the minumun and maximun length for the password.
+ * Also I will add the min and max length for the password.
  * This function will create the password. The password should have at least:
  * At least one special character,
  * At least number
  * At least one upper case letter.
  */
 function generatePassword(UPPERCASE_FLAG, NUMBER_FLAG, SYMBOL_FLAG) {
-  PASSWORD = [];
-  NUMBERS.push(1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-  SYMBOLS.push(
-    "!",
-    "#",
-    "$",
-    "%",
-    "&",
-    "'",
-    "(",
-    ")",
-    ",",
-    "*",
-    "+",
-    "-",
-    ".",
-    "/",
-    ":",
-    ";",
-    "<",
-    "=",
-    ">",
-    "?",
-    "@",
-    "[",
-    "]",
-    "^",
-    "_",
-    "{",
-    "|",
-    "}",
-    "~"
-  );
-  LETTERS.push(
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z"
-  );
-  MIN_LENGTH_PASSWORD = 8;
-  MAX_LENGTH_PASSWORD = 128;
+  const PASSWORD = [];
   const passwordLength = Math.floor(
     Math.random() * (MAX_LENGTH_PASSWORD - MIN_LENGTH_PASSWORD) +
       MIN_LENGTH_PASSWORD
