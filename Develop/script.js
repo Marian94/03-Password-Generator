@@ -59,19 +59,16 @@ const LETTERS = [
   "y",
   "z",
 ];
-let MIN_LENGTH_PASSWORD = 8;
-let MAX_LENGTH_PASSWORD = 128;
-let UPPERCASE_FLAG = false;
-let NUMBER_FLAG = false;
-let SYMBOL_FLAG = false;
+const MIN_LENGTH_PASSWORD = 8;
+const MAX_LENGTH_PASSWORD = 128;
+let passwordLength = 0;
 
 const generateBtn = document.querySelector("#generate");
-const passwordConfigurationBtn = document.querySelector("#configuration");
 
 // Write password to the #password input
 function writePassword() {
   const passwordText = document.getElementById("password");
-  const password = generatePassword(UPPERCASE_FLAG, NUMBER_FLAG, SYMBOL_FLAG);
+  const password = setPasswordConfiguration();
   passwordText.textContent = `${password}\n\n\n <Password copied to clipboard>`;
   //Select the password and copy into the clipboard.
   passwordText.select();
@@ -79,18 +76,47 @@ function writePassword() {
   navigator.clipboard.writeText(password);
 }
 /**
+ * This function validate that the length of the password is correct.
+ */
+function setPasswordLength() {
+  passwordLength = parseFloat(
+    prompt(
+      `Add the length of the password (min ${MIN_LENGTH_PASSWORD}, max ${MAX_LENGTH_PASSWORD}) :`
+    )
+  );
+  if (Number.isNaN(passwordLength)) {
+    alert("Error this is not a valid number ");
+    setPasswordLength();
+  }
+  if (
+    passwordLength < MIN_LENGTH_PASSWORD ||
+    passwordLength > MAX_LENGTH_PASSWORD
+  ) {
+    alert(
+      `Error please select a valid number (min ${MIN_LENGTH_PASSWORD}, max ${MAX_LENGTH_PASSWORD}) `
+    );
+    setPasswordLength();
+  }
+  return passwordLength;
+}
+/**
  * This function you can add the settings for the password
  */
-
-function passwordConfiguration() {
-  UPPERCASE_FLAG = confirm(
+function setPasswordConfiguration() {
+  let passwordFlags = {
+    hasUppercaseChars: false,
+    hasNumbers: false,
+    hasSymbols: false,
+  };
+  passwordFlags.hasUppercaseChars = confirm(
     "Do you want to includes Upper Case to your password?"
   );
-  NUMBER_FLAG = confirm("Do you want to includes numbers?");
-  SYMBOL_FLAG = confirm(
+  passwordFlags.hasNumbers = confirm("Do you want to includes numbers?");
+  passwordFlags.hasSymbols = confirm(
     "Do you want to includes special characters? I.E(!#$%&'()*+,...)"
   );
-  writePassword();
+  passwordLength = setPasswordLength();
+  return (password = generatePassword(passwordFlags));
 }
 
 /**
@@ -107,25 +133,21 @@ function randomElement(array) {
  * At least number
  * At least one upper case letter.
  */
-function generatePassword(UPPERCASE_FLAG, NUMBER_FLAG, SYMBOL_FLAG) {
+function generatePassword({ hasUppercaseChars, hasNumbers, hasSymbols }) {
   const PASSWORD = [];
-  const passwordLength = Math.floor(
-    Math.random() * (MAX_LENGTH_PASSWORD - MIN_LENGTH_PASSWORD) +
-      MIN_LENGTH_PASSWORD
-  );
   for (let i = 0; i < passwordLength; i++) {
     //If the index is divisible by 3 we are going to  upper case the letter and added to the password and continue to the next iteration
-    if (UPPERCASE_FLAG && i % 3 == 0) {
+    if (hasUppercaseChars && i % 3 == 0) {
       PASSWORD.push(randomElement(LETTERS).toUpperCase());
       continue;
     }
     //If the index number is divisible by 4 we are going to add special characters to the password and continue to the next iteration
-    if (SYMBOL_FLAG && i % 4 == 0) {
+    if (hasSymbols && i % 4 == 0) {
       PASSWORD.push(randomElement(SYMBOLS));
       continue;
     }
     //If the index number is divisible by 2 we are going to add a number to the password and continue to the next iteration
-    if (NUMBER_FLAG && i % 2 == 0) {
+    if (hasNumbers && i % 2 == 0) {
       PASSWORD.push(randomElement(NUMBERS));
       continue;
     }
@@ -136,4 +158,3 @@ function generatePassword(UPPERCASE_FLAG, NUMBER_FLAG, SYMBOL_FLAG) {
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-passwordConfigurationBtn.addEventListener("click", passwordConfiguration);
